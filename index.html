@@ -36,17 +36,73 @@
     .footer{margin-top:23px;color:var(--muted);font-size:12px;text-align:center}
     @media(max-width:1160px){.grid{grid-template-columns:260px minmax(0,1fr)}.grid>.stack:last-child{grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr))}.grid>.stack:last-child>.panel:last-child{grid-column:1/-1}}
     @media(max-width:740px){.container{padding:14px 12px 32px}header{align-items:flex-start;flex-direction:column}.grid{display:flex;flex-direction:column}.grid>.stack,.grid>.stack:last-child{display:grid;grid-template-columns:1fr;width:100%}.grid>.stack:last-child>.panel:last-child{grid-column:auto}.panel{padding:15px;width:100%}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.combo{gap:5px}.hex{width:47px;height:51px;flex-basis:47px}.hex-row.odd{transform:translateX(23px)}.hex .unit{font-size:18px}.board{min-width:323px}.board-wrap{padding:15px 4px}}
+
+    /* Mobile-first navigation enhancement: fixed header + compact icon rail */
+    .mobile-rail,.mobile-view-title{display:none}
+    header{position:sticky;top:0;z-index:50;background:rgba(24,34,49,.97);border:1px solid var(--line);border-radius:14px;padding:14px 17px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+    @media(max-width:740px){
+      :root{--mobile-header-height:68px;--mobile-rail-width:57px}
+      .container{max-width:none;padding:0 0 24px}
+      header{position:fixed;top:0;left:0;right:0;height:var(--mobile-header-height);z-index:80;margin:0;padding:8px 12px;display:flex;flex-direction:row;align-items:center;gap:8px;border:0;border-bottom:1px solid var(--line);border-radius:0}
+      header .brand{min-width:0}
+      header .brand h1{font-size:19px;white-space:nowrap}
+      header .brand .eyebrow{font-size:9px;letter-spacing:.10em}
+      header .brand p,header .pill{display:none}
+      .mobile-view-title{display:block;flex:0 0 auto;margin-left:auto;border:1px solid #7b6345;background:#352d26;border-radius:7px;padding:5px 7px;color:#ebc88c;font-size:11px;font-weight:700}
+      .mobile-rail{position:fixed;top:var(--mobile-header-height);bottom:0;left:0;z-index:70;display:flex;flex-direction:column;width:var(--mobile-rail-width);padding:7px 5px calc(12px + env(safe-area-inset-bottom));gap:5px;overflow-y:auto;overflow-x:hidden;background:#121e2e;border-right:1px solid var(--line);scrollbar-width:none}
+      .mobile-rail::-webkit-scrollbar{display:none}
+      .mobile-rail button{display:flex;flex:0 0 51px;min-height:51px;width:100%;align-items:center;justify-content:center;flex-direction:column;gap:3px;background:transparent;border:1px solid transparent;border-radius:10px;padding:5px 1px;color:#adbdd1}
+      .mobile-rail button svg{display:block;width:21px;height:21px;flex-shrink:0}
+      .mobile-rail button span{font-size:10px;font-weight:700;line-height:1.1}
+      .mobile-rail button.active{background:#49392b;border-color:#a98753;color:#f8d597}
+      .mobile-rail button:hover{background:#33445c}
+      .mobile-rail button.active:hover{background:#49392b}
+      .grid{display:flex;flex-direction:column;gap:0;margin:calc(var(--mobile-header-height) + 12px) 9px 0 calc(var(--mobile-rail-width) + 9px)}
+      .grid>.stack,.grid>.stack:last-child{display:contents}
+      .grid .panel[data-mobile-view]{display:none}
+      .grid .panel[data-mobile-view].mobile-active{display:block;margin:0 0 12px}
+      .panel{padding:13px;border-radius:12px}
+      h2{font-size:15px}
+      .board-wrap{padding:10px 3px}
+      .board{min-width:278px}
+      .hex{width:39px;height:44px;flex-basis:39px}
+      .hex-row{margin-top:-6px}.hex-row.odd{transform:translateX(19px)}
+      .hex .unit{font-size:16px}.hex small{font-size:9px}
+      .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+      .card{min-height:104px}
+      .board-controls{gap:8px}
+      .button{font-size:12px;padding:9px 10px}
+      .combo{gap:6px}.combo-part{padding:10px}
+      .log{height:min(60vh,450px)}
+      .footer{padding:0 12px 0 calc(var(--mobile-rail-width) + 12px);margin-top:10px}
+    }
+    @media(max-width:350px){
+      header .brand h1{font-size:16px}
+      .mobile-view-title{font-size:10px;padding:4px 5px}
+      .cards{grid-template-columns:1fr 1fr}
+      .card{padding:9px 6px}
+    }
   </style>
 </head>
 <body>
 <div class="container">
   <header>
     <div class="brand"><div class="eyebrow">FANTASY DUNGEON · RULE LAB</div><h1>戦闘ルール確認室</h1><p>アクション × 強化コマンドの組み合わせを実際に試す、独立した検証ページ</p></div>
-    <span class="pill">試作 v0.1 / 正式仕様ではありません</span>
+    <span class="pill">試作 v0.2 / 正式仕様ではありません</span><span id="mobileViewTitle" class="mobile-view-title" aria-live="polite">マップ</span>
   </header>
+  <nav class="mobile-rail" aria-label="表示する画面を切り替え">
+    <button type="button" data-nav-view="map" title="マップ" aria-label="マップ画面を表示" aria-pressed="true" class="active"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span>マップ</span></button>
+    <button type="button" data-nav-view="actions" title="行動" aria-label="行動画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 17.5-12-12L6 2l12 12"/><path d="m13 19 6-6M8 13l-3 3M2 22l5-5M22 22l-5-5"/><path d="M14 2 8 8M18 6l4-4"/></svg><span>行動</span></button>
+    <button type="button" data-nav-view="boosts" title="強化" aria-label="強化画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 6.1L20 11l-6.1 1.9L12 19l-1.9-6.1L4 11l6.1-1.9z"/><path d="m20 18 .8 1.2L22 20l-1.2.8L20 22l-.8-1.2L18 20l1.2-.8z"/></svg><span>強化</span></button>
+    <button type="button" data-nav-view="combo" title="実行" aria-label="実行画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg><span>実行</span></button>
+    <button type="button" data-nav-view="move" title="移動" aria-label="移動画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 7l4-4M4 7l4 4M20 17H4m16 0-4-4m4 4-4 4"/></svg><span>移動</span></button>
+    <button type="button" data-nav-view="scenario" title="状況" aria-label="状況画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4m0 1c5-3 9 3 14 0v10c-5 3-9-3-14 0"/></svg><span>状況</span></button>
+    <button type="button" data-nav-view="log" title="ログ" aria-label="ログ画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h12v15a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 0-3-3h7z"/><path d="M8 8h8M8 12h8M8 16h6"/></svg><span>ログ</span></button>
+    <button type="button" data-nav-view="rules" title="説明" aria-label="説明画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5a2 2 0 0 1 2-2h6v18H5a2 2 0 0 0-2 2zM21 5a2 2 0 0 0-2-2h-6v18h6a2 2 0 0 1 2 2z"/></svg><span>説明</span></button>
+  </nav>
   <main class="grid">
     <aside class="stack">
-      <section class="panel">
+      <section class="panel" data-mobile-view="move">
         <h2>01 · 移動方式の比較</h2>
         <p class="small">移動方式はまだ未決定です。3つの案を切り替えて挙動を比較できます。</p>
         <div id="modes">
@@ -57,7 +113,7 @@
         <hr class="sep">
         <div id="modeNote" class="note"></div>
       </section>
-      <section class="panel">
+      <section class="panel" data-mobile-view="rules">
         <h2>確定事項 / 未決定事項</h2>
         <h3>確定</h3>
         <ul class="tasks"><li>元のストラテジーゲームとは別作品</li><li>行動選択の中心はカード</li><li>アクション＋強化コマンドの2種類を組み合わせる構想</li></ul>
@@ -67,7 +123,7 @@
       </section>
     </aside>
     <div class="stack">
-      <section class="panel">
+      <section class="panel" data-mobile-view="map">
         <div class="board-head"><h2>02 · テスト戦場 <span class="tag">7×5 HEX</span></h2><div class="legend"><span><b style="color:#8fdbb6">●</b> 味方</span><span><b style="color:#ee9d97">●</b> 敵</span><span><b style="color:#9dc6f5">●</b> 選択マス</span></div></div>
         <div class="board-wrap"><div id="board" class="board" role="group" aria-label="六角形の試作戦場"></div></div>
         <p class="small" id="boardHint">敵をクリックすると攻撃対象、空きHEXをクリックすると移動先に指定します。</p>
@@ -76,14 +132,15 @@
           <button type="button" id="resetBtn" class="button">最初から試す ↺</button>
         </div>
       </section>
-      <section class="panel">
+      <section class="panel" data-mobile-view="actions">
         <h2>03 · アクションを選択 <span class="tag">デモ用カード</span></h2>
         <div id="actions" class="cards"></div>
-        <hr class="sep">
+      </section>
+      <section class="panel" data-mobile-view="boosts">
         <h2>04 · 強化コマンドを選択 <span class="tag">デモ用カード</span></h2>
         <div id="boosts" class="cards"></div>
       </section>
-      <section class="panel">
+      <section class="panel" data-mobile-view="combo">
         <h2>05 · 組み合わせ確認</h2>
         <div class="combo"><div class="combo-part"><small>アクション</small><strong id="actionName"></strong></div><span class="plus">+</span><div class="combo-part"><small>強化コマンド</small><strong id="boostName"></strong></div></div>
         <div id="preview" class="result" aria-live="polite"></div>
@@ -94,7 +151,7 @@
       </section>
     </div>
     <aside class="stack">
-      <section class="panel">
+      <section class="panel" data-mobile-view="scenario">
         <h2>テストシナリオ</h2>
         <p style="margin:0 0 5px;font-weight:800">閉ざされた坑道 <span class="tag">仮</span></p>
         <p class="small">1人の英雄で敵2体を倒すだけの動作確認。演出・正式な敵AI・報酬は未実装です。</p>
@@ -105,11 +162,11 @@
         <hr class="sep">
         <p id="objective" class="note" style="margin:0">目標：敵2体を撃破</p>
       </section>
-      <section class="panel">
+      <section class="panel" data-mobile-view="log">
         <h2>行動ログ</h2>
         <div id="log" class="log" aria-live="polite"></div>
       </section>
-      <section class="panel">
+      <section class="panel" data-mobile-view="rules">
         <h2>この画面の目的</h2>
         <div class="note">これはゲーム本体ではなく、ルールの判断材料を作るための試作品です。既存のスキル・AP・ダメージ式にはまだ接続していません。</div>
         <p class="small">威力、移動力、射程、強化値は説明用の仮数値です。移動方式の切り替え結果は仕様決定ではありません。</p>
@@ -222,6 +279,21 @@
   }
   document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;state.freeMoved=false;addLog("移動方式を"+state.mode.toUpperCase()+"へ切り替え（比較用）。");render()}));
   $("freeMoveBtn").addEventListener("click",freeMove);$("resetBtn").addEventListener("click",initial);$("executeBtn").addEventListener("click",execute);$("nextBtn").addEventListener("click",nextRound);
+
+  const viewLabels={map:"マップ",actions:"アクション",boosts:"強化",combo:"行動実行",move:"移動比較",scenario:"戦況",log:"ログ",rules:"ルール"};
+  function showMobileView(view){
+    if(!Object.prototype.hasOwnProperty.call(viewLabels,view))return;
+    document.querySelectorAll("[data-mobile-view]").forEach(el=>el.classList.toggle("mobile-active",el.dataset.mobileView===view));
+    document.querySelectorAll("[data-nav-view]").forEach(button=>{
+      const active=button.dataset.navView===view;
+      button.classList.toggle("active",active);
+      button.setAttribute("aria-pressed",String(active));
+    });
+    $("mobileViewTitle").textContent=viewLabels[view];
+    if(window.matchMedia("(max-width: 740px)").matches)window.scrollTo({top:0,behavior:"instant"});
+  }
+  document.querySelectorAll("[data-nav-view]").forEach(button=>button.addEventListener("click",()=>showMobileView(button.dataset.navView)));
+  showMobileView("map");
   initial();
 })();
 </script>
