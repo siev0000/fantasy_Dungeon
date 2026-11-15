@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>fantasy_Dungeon | 戦闘ルール確認室</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101723;--surface:#192334;--panel:#1c293c;--line:#37475f;--text:#eff2f6;--muted:#aebed0;--gold:#e5bd77;--green:#8fdbb6;--red:#ee9d97;--blue:#9dc6f5}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 22% -10%,#283b56 0%,#101723 52%);color:var(--text);font-family:"Yu Gothic UI","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif;line-height:1.55}
+    button{font:inherit;color:inherit;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+    .container{max-width:1420px;margin:auto;padding:22px 24px 56px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:22px}
+    .eyebrow{font-size:12px;letter-spacing:.13em;color:var(--gold);font-weight:800}.brand h1{margin:3px 0;font-size:clamp(23px,2.7vw,35px);line-height:1.2}.brand p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .pill{border:1px solid #8e754b;background:#362f29;color:#f5cf8a;border-radius:999px;padding:6px 12px;white-space:nowrap;font-size:12px;font-weight:700}
+    .grid{display:grid;grid-template-columns:minmax(230px,265px) minmax(0,1fr) minmax(260px,302px);gap:18px;align-items:start}
+    .stack{display:grid;gap:18px}.panel{background:linear-gradient(165deg,rgba(37,52,75,.95),rgba(25,35,52,.98));border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:0 14px 32px #070d1855;min-width:0}
+    h2{font-size:17px;margin:0 0 14px;display:flex;gap:8px;align-items:center}h3{font-size:14px;color:var(--gold);margin:0 0 10px}
+    .small{font-size:12px;color:var(--muted)}.sep{border:0;border-top:1px solid var(--line);margin:16px 0}.note{border-left:3px solid var(--gold);background:#ffffff08;padding:11px 12px;border-radius:0 8px 8px 0;font-size:13px}
+    .choice{display:block;width:100%;background:#142030;border:1px solid var(--line);border-radius:10px;text-align:left;padding:11px 12px;margin-top:8px}
+    .choice strong{font-size:13px}.choice span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+    .choice.selected,.card.selected{border-color:var(--gold);background:#4a3b2c;box-shadow:inset 0 0 0 1px #b68c4c}
+    .board-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}.board-head h2{margin:0}
+    .legend{display:flex;gap:12px;font-size:12px;color:var(--muted)}.legend b{font-size:15px}
+    .board-wrap{background:radial-gradient(circle at 60% 40%,#25364b,#111b29);border:1px solid #3c4a5b;border-radius:13px;padding:20px 8px;overflow:auto}
+    .board{display:flex;flex-direction:column;align-items:center;min-width:360px}
+    .hex-row{display:flex;justify-content:center;margin-top:-8px}.hex-row:first-child{margin-top:0}.hex-row.odd{transform:translateX(28px)}
+    .hex{width:57px;height:61px;flex:0 0 57px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;clip-path:polygon(25% 4%,75% 4%,99% 50%,75% 96%,25% 96%,1% 50%);background:#354659;border:0;margin-right:1px;padding:0;font-weight:800;position:relative}
+    .hex:nth-child(3n){background:#394d55}.hex:hover{background:#60738a}.hex.hero{background:#3f8974;color:white}.hex.enemy{background:#ad605b;color:white}.hex.dead{background:#4b4350;color:#bbb}.hex.target{box-shadow:none;filter:drop-shadow(0 0 5px #ffe0a1);background:#c27d57}.hex.destination{background:#4879a9}.hex small{font-size:10px;font-weight:600;opacity:.95}.hex .unit{font-size:21px;line-height:1.1}
+    .board-controls{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:12px}.button{padding:10px 14px;background:#273951;border:1px solid #6a7f98;border-radius:9px;font-size:13px;font-weight:700}.button:hover:not(:disabled){background:#38516f}.button.primary{background:#b28746;border-color:#dfbc80;color:#111923}.button.primary:hover{background:#d9ae69}
+    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.card{border:1px solid #455873;border-radius:10px;background:#18283a;text-align:left;min-height:105px;padding:11px 9px}.card strong{display:block;font-size:13px;margin-bottom:6px}.card span{display:block;color:var(--muted);font-size:11px;line-height:1.5}.card .kind{color:var(--gold);font-size:10px;font-weight:800}
+    .combo{display:flex;align-items:stretch;gap:9px}.combo-part{flex:1;min-width:0;background:#101b29;border:1px solid var(--line);border-radius:10px;padding:12px}.combo-part small{color:var(--gold);display:block}.combo-part strong{display:block;margin-top:4px}.plus{align-self:center;color:var(--gold);font-weight:800;font-size:23px}.result{background:#273a4d;border-radius:9px;padding:11px 12px;margin-top:12px;font-size:13px}
+    .stat{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:7px 0;font-size:13px}.stat b{font-size:15px}.hp-bar{height:8px;background:#4c323a;border-radius:999px;overflow:hidden;margin:7px 0 12px}.hp-bar i{display:block;height:100%;background:linear-gradient(90deg,#63aa82,#a2e1a2)}
+    .log{height:310px;overflow:auto;display:flex;flex-direction:column;gap:8px}.log p{font-size:12px;line-height:1.5;margin:0;padding:8px 10px;background:#101c2b;border-radius:8px;border-left:2px solid #6681a3}.log p:first-child{border-left-color:var(--gold)}
+    .tasks{margin:0;padding-left:18px;color:var(--muted);font-size:13px}.tasks li{margin-bottom:8px}.tag{font-size:11px;color:var(--gold);padding:2px 6px;border:1px solid #8e754b;border-radius:4px;vertical-align:middle}
+    .footer{margin-top:23px;color:var(--muted);font-size:12px;text-align:center}
+    @media(max-width:1160px){.grid{grid-template-columns:260px minmax(0,1fr)}.grid>.stack:last-child{grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr))}.grid>.stack:last-child>.panel:last-child{grid-column:1/-1}}
+    @media(max-width:740px){.container{padding:14px 12px 32px}header{align-items:flex-start;flex-direction:column}.grid{display:flex;flex-direction:column}.grid>.stack,.grid>.stack:last-child{display:grid;grid-template-columns:1fr;width:100%}.grid>.stack:last-child>.panel:last-child{grid-column:auto}.panel{padding:15px;width:100%}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.combo{gap:5px}.hex{width:47px;height:51px;flex-basis:47px}.hex-row.odd{transform:translateX(23px)}.hex .unit{font-size:18px}.board{min-width:323px}.board-wrap{padding:15px 4px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="brand"><div class="eyebrow">FANTASY DUNGEON · RULE LAB</div><h1>戦闘ルール確認室</h1><p>アクション × 強化コマンドの組み合わせを実際に試す、独立した検証ページ</p></div>
+    <span class="pill">試作 v0.1 / 正式仕様ではありません</span>
+  </header>
+  <main class="grid">
+    <aside class="stack">
+      <section class="panel">
+        <h2>01 · 移動方式の比較</h2>
+        <p class="small">移動方式はまだ未決定です。3つの案を切り替えて挙動を比較できます。</p>
+        <div id="modes">
+          <button class="choice selected" type="button" data-mode="m1"><strong>M1 · 移動もアクション</strong><span>「移動」カードを選んで移動する</span></button>
+          <button class="choice" type="button" data-mode="m2"><strong>M2 · 基本移動は別枠</strong><span>毎ラウンド1回、2HEXまで自由移動（試案）</span></button>
+          <button class="choice" type="button" data-mode="m3"><strong>M3 · アクション内に移動</strong><span>「突進」などのカードに移動を含める</span></button>
+        </div>
+        <hr class="sep">
+        <div id="modeNote" class="note"></div>
+      </section>
+      <section class="panel">
+        <h2>確定事項 / 未決定事項</h2>
+        <h3>確定</h3>
+        <ul class="tasks"><li>元のストラテジーゲームとは別作品</li><li>行動選択の中心はカード</li><li>アクション＋強化コマンドの2種類を組み合わせる構想</li></ul>
+        <hr class="sep">
+        <h3>未決定</h3>
+        <ul class="tasks"><li>移動方式（M1 / M2 / M3）</li><li>1ラウンドのカード使用数・AP・CT</li><li>手札枚数、捨て札、疲労、再利用</li><li>行動順、敵AI、効果の正式数値</li></ul>
+      </section>
+    </aside>
+    <div class="stack">
+      <section class="panel">
+        <div class="board-head"><h2>02 · テスト戦場 <span class="tag">7×5 HEX</span></h2><div class="legend"><span><b style="color:#8fdbb6">●</b> 味方</span><span><b style="color:#ee9d97">●</b> 敵</span><span><b style="color:#9dc6f5">●</b> 選択マス</span></div></div>
+        <div class="board-wrap"><div id="board" class="board" role="group" aria-label="六角形の試作戦場"></div></div>
+        <p class="small" id="boardHint">敵をクリックすると攻撃対象、空きHEXをクリックすると移動先に指定します。</p>
+        <div class="board-controls">
+          <button type="button" id="freeMoveBtn" class="button" disabled>基本移動（M2のみ）</button>
+          <button type="button" id="resetBtn" class="button">最初から試す ↺</button>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>03 · アクションを選択 <span class="tag">デモ用カード</span></h2>
+        <div id="actions" class="cards"></div>
+        <hr class="sep">
+        <h2>04 · 強化コマンドを選択 <span class="tag">デモ用カード</span></h2>
+        <div id="boosts" class="cards"></div>
+      </section>
+      <section class="panel">
+        <h2>05 · 組み合わせ確認</h2>
+        <div class="combo"><div class="combo-part"><small>アクション</small><strong id="actionName"></strong></div><span class="plus">+</span><div class="combo-part"><small>強化コマンド</small><strong id="boostName"></strong></div></div>
+        <div id="preview" class="result" aria-live="polite"></div>
+        <div class="board-controls">
+          <span id="stepInfo" class="small"></span>
+          <div style="display:flex;gap:9px"><button type="button" id="executeBtn" class="button primary">行動を実行</button><button type="button" id="nextBtn" class="button">次ラウンド →</button></div>
+        </div>
+      </section>
+    </div>
+    <aside class="stack">
+      <section class="panel">
+        <h2>テストシナリオ</h2>
+        <p style="margin:0 0 5px;font-weight:800">閉ざされた坑道 <span class="tag">仮</span></p>
+        <p class="small">1人の英雄で敵2体を倒すだけの動作確認。演出・正式な敵AI・報酬は未実装です。</p>
+        <div class="stat"><span>ラウンド</span><b id="round"></b></div>
+        <div class="stat"><span>味方HP</span><b id="heroHp"></b></div><div class="hp-bar"><i id="heroBar"></i></div>
+        <div class="stat"><span>残りの敵</span><b id="enemyCount"></b></div>
+        <div id="enemyStats"></div>
+        <hr class="sep">
+        <p id="objective" class="note" style="margin:0">目標：敵2体を撃破</p>
+      </section>
+      <section class="panel">
+        <h2>行動ログ</h2>
+        <div id="log" class="log" aria-live="polite"></div>
+      </section>
+      <section class="panel">
+        <h2>この画面の目的</h2>
+        <div class="note">これはゲーム本体ではなく、ルールの判断材料を作るための試作品です。既存のスキル・AP・ダメージ式にはまだ接続していません。</div>
+        <p class="small">威力、移動力、射程、強化値は説明用の仮数値です。移動方式の切り替え結果は仕様決定ではありません。</p>
+      </section>
+    </aside>
+  </main>
+  <div class="footer">fantasy_Dungeon · 静的HTML / 外部ライブラリ不要 / 元ゲームは無変更</div>
+</div>
+<script>
+(function(){
+  "use strict";
+  const actions=[
+    {id:"slash",name:"斬撃",kind:"近接攻撃",type:"attack",power:3,range:1,description:"隣接する敵を攻撃"},
+    {id:"fire",name:"火球",kind:"魔法攻撃",type:"attack",power:2,range:3,description:"遠距離から魔法攻撃"},
+    {id:"heal",name:"治癒",kind:"支援",type:"heal",heal:3,description:"自分のHPを回復"},
+    {id:"move",name:"移動",kind:"移動",type:"move",move:3,description:"指定したHEXまで移動"},
+    {id:"dash",name:"突進",kind:"移動＋攻撃",type:"dash",move:2,power:2,range:1,description:"移動後、隣接敵を攻撃"}
+  ];
+  const boosts=[
+    {id:"power",name:"威力強化",description:"攻撃威力+2 / 回復量+2"},
+    {id:"range",name:"射程延長",description:"攻撃射程+2"},
+    {id:"area",name:"範囲拡大",description:"対象の隣接敵にも効果"},
+    {id:"mobility",name:"機動強化",description:"移動距離+2"},
+    {id:"swift",name:"迅速",description:"行動順の速度+20（表示のみ）"},
+    {id:"none",name:"強化なし",description:"追加効果なし"}
+  ];
+  const modeDesc={
+    m1:"移動には専用の「移動」アクションを選びます。通常攻撃を選んだラウンドは基本移動できません。",
+    m2:"アクションとは別に、基本移動ボタンで毎ラウンド最大2HEX移動できます。移動した後に攻撃も試せます。",
+    m3:"移動を含む「突進」アクションで位置取りを試せます。専用の移動カードも残し、比較するための暫定設定です。"
+  };
+  const $=id=>document.getElementById(id);
+  let state;
+  function initial(){
+    state={mode:"m1",round:1,action:"slash",boost:"power",hero:{x:1,y:2,hp:12,max:12},enemies:[{id:"e1",x:4,y:2,name:"洞窟ゴブリン",hp:10,max:10},{id:"e2",x:5,y:0,name:"洞窟スライム",hp:7,max:7}],target:"e1",destination:null,acted:false,freeMoved:false,log:["検証開始：アクションと強化を選んでください。"]};
+    render();
+  }
+  function axial(x,y){return {q:x-Math.floor((y-(y&1))/2),r:y};}
+  function distance(a,b){const p=axial(a.x,a.y),q=axial(b.x,b.y);return (Math.abs(p.q-q.q)+Math.abs(p.r-q.r)+Math.abs(p.q+p.r-q.q-q.r))/2;}
+  function selectedAction(){return actions.find(a=>a.id===state.action);}
+  function selectedBoost(){return boosts.find(b=>b.id===state.boost);}
+  function selectedEnemy(){return state.enemies.find(e=>e.id===state.target&&e.hp>0);}
+  function value(){const a=selectedAction(),b=state.boost;return {power:(a.power||0)+(b==="power"&&(a.type==="attack"||a.type==="dash")?2:0),range:(a.range||0)+(b==="range"?2:0),move:(a.move||0)+(b==="mobility"?2:0),heal:(a.heal||0)+(b==="power"&&a.type==="heal"?2:0),area:b==="area",initiative:b==="swift"?20:0};}
+  function addLog(t){state.log.unshift("R"+state.round+" | "+t);state.log=state.log.slice(0,24);}
+  function selectTile(x,y){const enemy=state.enemies.find(e=>e.x===x&&e.y===y&&e.hp>0);if(enemy){state.target=enemy.id;}else if(!(state.hero.x===x&&state.hero.y===y)){state.destination={x,y};}render();}
+  function buildBoard(){
+    const board=$("board");board.replaceChildren();
+    for(let y=0;y<5;y++){const row=document.createElement("div");row.className="hex-row"+(y%2?" odd":"");
+      for(let x=0;x<7;x++){const e=state.enemies.find(e=>e.x===x&&e.y===y&&e.hp>0);const hero=state.hero.x===x&&state.hero.y===y;const dest=state.destination&&state.destination.x===x&&state.destination.y===y;const tile=document.createElement("button");tile.type="button";tile.className="hex"+(hero?" hero":e?" enemy":dest?" destination":"")+(e&&e.id===state.target?" target":"");tile.setAttribute("aria-label",hero?"味方":e?e.name+" HP"+e.hp: "座標 "+x+","+y);
+        const span=document.createElement("span");span.className="unit";span.textContent=hero?"♜":e?"⚔":dest?"◎":"·";const small=document.createElement("small");small.textContent=hero?"味方":e?"HP "+e.hp:dest?"移動先":"";tile.append(span,small);tile.addEventListener("click",()=>selectTile(x,y));row.append(tile);
+      }board.append(row);}
+  }
+  function cards(container,items,selected,callback){const el=$(container);el.replaceChildren();items.forEach(item=>{const b=document.createElement("button");b.type="button";b.className="card"+(item.id===selected?" selected":"");b.setAttribute("aria-pressed",item.id===selected?"true":"false");const kind=document.createElement("span");kind.className="kind";kind.textContent=item.kind||"強化";const title=document.createElement("strong");title.textContent=item.name;const sub=document.createElement("span");sub.textContent=item.description;b.append(kind,title,sub);b.addEventListener("click",()=>{callback(item.id);render()});el.append(b);});}
+  function preview(){
+    const a=selectedAction(),v=value(),e=selectedEnemy();let description="";
+    if(a.type==="attack")description="攻撃威力 "+v.power+" / 射程 "+v.range+" HEX"+(v.area?" / 範囲：対象の隣接HEX":"")+"。";
+    if(a.type==="heal")description="自身を "+v.heal+" HP回復。";
+    if(a.type==="move")description="選択した移動先まで最大 "+v.move+" HEX移動。";
+    if(a.type==="dash")description="移動先へ最大 "+v.move+" HEX移動し、射程 "+v.range+" 以内の敵に "+v.power+" ダメージ。";
+    if(v.initiative)description+=" 行動順補正 +20（仮表示。未処理）。";
+    if(e&&(a.type==="attack"||a.type==="dash"))description+=" 対象："+e.name+" / 距離 "+distance(state.hero,e)+" HEX。";
+    if(state.destination&&(a.type==="move"||a.type==="dash"))description+=" 移動先まで "+distance(state.hero,state.destination)+" HEX。";
+    if(a.type==="heal"&&state.boost==="range")description+=" ※この組み合わせでは射程強化は無効。";
+    if(state.boost==="area"&&(a.type==="heal"||a.type==="move"))description+=" ※この組み合わせでは範囲強化は無効。";
+    $("actionName").textContent=a.name;$("boostName").textContent=selectedBoost().name;$("preview").textContent=description;
+  }
+  function freeMove(){
+    if(state.mode!=="m2"||state.freeMoved||!state.destination){addLog("基本移動ができません。移動先を選び、M2で試してください。");render();return;}
+    const d=distance(state.hero,state.destination);if(d>2||state.enemies.some(e=>e.hp>0&&e.x===state.destination.x&&e.y===state.destination.y)){addLog("基本移動は2HEX以内の空きマスまでです。");render();return;}
+    state.hero.x=state.destination.x;state.hero.y=state.destination.y;state.destination=null;state.freeMoved=true;addLog("基本移動：移動先へ "+d+" HEX移動しました。");render();
+  }
+  function damage(enemy,amount){enemy.hp=Math.max(0,enemy.hp-amount);addLog(enemy.name+"に"+amount+"ダメージ。残HP "+enemy.hp+"。");}
+  function execute(){
+    if(state.acted){addLog("行動済みです。「次ラウンド」で進めてください。");render();return;}
+    if(state.enemies.every(e=>e.hp<=0)){addLog("すでにクリア済みです。リセットしてください。");render();return;}
+    const a=selectedAction(),v=value(),target=selectedEnemy();
+    if(a.type==="move"||a.type==="dash"){
+      if(!state.destination){addLog("先に空きHEXを移動先に選択してください。");render();return;}
+      const d=distance(state.hero,state.destination);if(d>v.move){addLog("移動距離を超えています（最大"+v.move+" HEX）。");render();return;}
+      state.hero.x=state.destination.x;state.hero.y=state.destination.y;state.destination=null;addLog(a.name+"： "+d+" HEX移動しました。");
+    }
+    if(a.type==="attack"||a.type==="dash"){
+      if(!target){addLog("攻撃対象がいません。敵を選択してください。");if(a.type!=="dash"){render();return;}}
+      else if(distance(state.hero,target)>v.range){addLog("敵が射程外です（距離"+distance(state.hero,target)+" / 射程"+v.range+"）。");if(a.type!=="dash"){render();return;}}
+      else {damage(target,v.power);if(v.area){state.enemies.filter(e=>e.id!==target.id&&e.hp>0&&distance(e,target)<=1).forEach(e=>damage(e,v.power));}}
+    }else if(a.type==="heal"){const before=state.hero.hp;state.hero.hp=Math.min(state.hero.max,state.hero.hp+v.heal);addLog("治癒：HPを"+(state.hero.hp-before)+"回復。");}
+    state.acted=true;
+    if(state.enemies.every(e=>e.hp<=0))addLog("シナリオ達成！敵をすべて撃破しました。");
+    render();
+  }
+  function nextRound(){if(state.enemies.every(e=>e.hp<=0)){addLog("クリア済みです。「最初から試す」で再開できます。");render();return;}state.round++;state.acted=false;state.freeMoved=false;addLog("次のラウンド。行動を選び直してください。");render();}
+  function render(){
+    document.querySelectorAll("[data-mode]").forEach(b=>{const active=b.dataset.mode===state.mode;b.classList.toggle("selected",active);b.setAttribute("aria-pressed",active?"true":"false");});
+    $("modeNote").textContent=modeDesc[state.mode];
+    cards("actions",actions,state.action,id=>state.action=id);cards("boosts",boosts,state.boost,id=>state.boost=id);
+    buildBoard();preview();
+    $("round").textContent=String(state.round);
+    $("heroHp").textContent=state.hero.hp+" / "+state.hero.max;
+    $("heroBar").style.width=100*state.hero.hp/state.hero.max+"%";
+    const alive=state.enemies.filter(e=>e.hp>0);
+    $("enemyCount").textContent=alive.length+" / "+state.enemies.length;
+    $("enemyStats").textContent=state.enemies.map(e=>e.name+"："+e.hp+"/"+e.max).join("　");
+    $("objective").textContent=alive.length===0?"✓ テストクリア：敵2体を撃破しました。":"目標：敵2体を撃破（残り"+alive.length+"体）";
+    $("freeMoveBtn").disabled=state.mode!=="m2"||state.freeMoved||!state.destination;
+    $("executeBtn").disabled=state.acted||alive.length===0;
+    $("nextBtn").disabled=alive.length===0;
+    $("stepInfo").textContent=state.acted?"このラウンドの行動は完了":"行動未実行 / "+(state.freeMoved?"基本移動済み":"移動先・敵を選択可能");
+    $("boardHint").textContent="敵HEX：対象選択 / 空きHEX：移動先選択。"+" 移動先は"+(state.destination?"("+state.destination.x+","+state.destination.y+")":"未指定")+"。";
+    const log=$("log");log.replaceChildren();state.log.forEach(entry=>{const p=document.createElement("p");p.textContent=entry;log.append(p)});
+  }
+  document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{state.mode=b.dataset.mode;state.freeMoved=false;addLog("移動方式を"+state.mode.toUpperCase()+"へ切り替え（比較用）。");render()}));
+  $("freeMoveBtn").addEventListener("click",freeMove);$("resetBtn").addEventListener("click",initial);$("executeBtn").addEventListener("click",execute);$("nextBtn").addEventListener("click",nextRound);
+  initial();
+})();
+</script>
+</body>
+</html>
