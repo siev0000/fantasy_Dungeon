@@ -82,6 +82,55 @@
       .cards{grid-template-columns:1fr 1fr}
       .card{padding:9px 6px}
     }
+
+    /* HEX grid: pointed-top hexagons with odd-row horizontal offset.
+       An odd-r grid needs center spacing (width, height * 3/4), with
+       alternate rows shifted by half a hex width. */
+    :root{
+      --hex-w:52px;
+      --hex-h:60px;
+      --hex-offset:calc(var(--hex-w) / 2);
+      --hex-overlap:calc(var(--hex-h) / 4);
+    }
+    .board{
+      min-width:calc(7 * var(--hex-w) + var(--hex-offset) + 10px);
+      padding:4px 6px;
+    }
+    .hex-row{
+      margin-top:calc(-1 * var(--hex-overlap));
+    }
+    .hex-row:first-child{margin-top:0}
+    .hex-row.odd{
+      transform:translateX(var(--hex-offset));
+    }
+    .hex{
+      width:var(--hex-w);
+      height:var(--hex-h);
+      flex:0 0 var(--hex-w);
+      margin-right:0;
+      clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+    }
+    @media(max-width:740px){
+      :root{
+        --hex-w:39px;
+        --hex-h:45px;
+      }
+      .board{
+        min-width:calc(7 * var(--hex-w) + var(--hex-offset) + 10px);
+      }
+      .hex{
+        width:var(--hex-w);
+        height:var(--hex-h);
+        flex-basis:var(--hex-w);
+      }
+      .hex-row{
+        margin-top:calc(-1 * var(--hex-overlap));
+      }
+      .hex-row:first-child{margin-top:0}
+      .hex-row.odd{
+        transform:translateX(var(--hex-offset));
+      }
+    }
   </style>
 </head>
 <body>
