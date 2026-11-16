@@ -79,16 +79,39 @@ select,input{width:100%;height:42px;border:1px solid #71809b;border-radius:9px;b
  .effect p{font-size:10px;line-height:1.4;margin-top:4px;overflow-wrap:anywhere}
  .summary{gap:5px}.summary strong{font-size:14px}.summary .chip{font-size:10px;padding:3px 5px}
 }
+
+/* Compact filters: keep both selectors on a single line on phones too. */
+.toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:8px 10px;margin-bottom:10px;align-items:center}
+.toolbar .field{display:flex;flex-direction:row;align-items:center;gap:7px;min-width:0;flex:auto}
+.toolbar .field label{flex:none;font-size:12px;white-space:nowrap}
+.toolbar .field select{flex:1;min-width:0;width:0;height:37px;font-size:12px;padding:5px 6px}
+.deck{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.summary{margin-bottom:10px;gap:6px}
+.summary strong{font-size:16px}
+.card .top{min-height:90px}
+@media(max-width:740px){
+ .toolbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:6px;gap:5px}
+ .toolbar .field{min-width:0;display:flex;flex-direction:row;align-items:center;gap:4px}
+ .toolbar .field label{font-size:10px;white-space:nowrap}
+ .toolbar .field select{width:0;min-width:0;flex:1;height:34px;padding:4px 2px;font-size:11px}
+ .deck{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .card{padding:8px}
+ .card .top{min-height:88px}
+ .kana{font-size:10px}
+ .name{font-size:14px}
+ .effect p{font-size:11px}
+ .summary{margin-bottom:8px;gap:5px}
+ .summary strong{font-size:14px}
+}
 </style>
 </head>
 <body>
 <header><div><div class="logo">FANTASY DUNGEON · RULE REFERENCE</div><h1>💳 カード一覧</h1></div><a href="./index.html">← 戦闘ルール確認室</a></header>
 <nav class="rail" aria-label="ページ移動">
 <a href="./index.html" title="戦闘画面"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15"/></svg>戦闘</a>
-<a class="active" href="./cards.html" aria-current="page" title="カード一覧"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="12" height="16" rx="2"/><path d="M8 8h4M8 12h4M18 7h3v12h-4"/></svg>カード</a>
+<a class="active" href="./cards.html" aria-current="page" title="グルームヘイヴン初版の開始6クラス（Lv1・X・Lv2〜9）の参考カード一覧です。fantasy_Dungeonへの採用は未確定です。"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="12" height="16" rx="2"/><path d="M8 8h4M8 12h4M18 7h3v12h-4"/></svg>カード</a>
 </nav>
 <main>
-<p class="intro">グルームヘイヴン初版の開始6クラスのレベル1・X・レベル2〜9の能力カードを参照するための一覧です。<strong>fantasy_Dungeonで採用済みのカードではありません。</strong></p>
 <div class="toolbar">
   <div class="field"><label for="classSelect">クラス</label><select id="classSelect"></select></div>
   <div class="field"><label for="levelSelect">Lv</label><select id="levelSelect"><option value="starter">Lv1＋X（初期候補）</option><option value="all">全レベル</option><option value="1">レベル1</option><option value="X">Xカード</option><option value="2">レベル2</option><option value="3">レベル3</option><option value="4">レベル4</option><option value="5">レベル5</option><option value="6">レベル6</option><option value="7">レベル7</option><option value="8">レベル8</option><option value="9">レベル9</option></select></div>
