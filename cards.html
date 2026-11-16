@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>カード一覧 | fantasy_Dungeon</title>
+<style>
+:root{color-scheme:dark;--bg:#101723;--surface:#1a2638;--line:#3d4c64;--muted:#b0bfd1;--gold:#e5bd77;--text:#f1f3f7}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 30% 0%,#263951,#101723 55%);color:var(--text);font-family:"Yu Gothic UI",Meiryo,system-ui,sans-serif;line-height:1.55}
+button,input,select{font:inherit}
+button{cursor:pointer}a{color:#eac988}
+header{height:76px;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:16px;padding:12px 22px;background:#182335f5;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+.logo{font-size:11px;font-weight:800;letter-spacing:.11em;color:var(--gold)}h1{margin:0;font-size:22px}
+header a{margin-left:auto;border:1px solid var(--line);text-decoration:none;border-radius:9px;padding:9px 12px;font-size:13px;white-space:nowrap}
+.rail{position:fixed;top:76px;left:0;bottom:0;width:64px;display:flex;flex-direction:column;gap:8px;padding:12px 5px;background:#131e2e;border-right:1px solid var(--line)}
+.rail a{display:flex;align-items:center;flex-direction:column;justify-content:center;gap:3px;min-height:55px;border:1px solid transparent;border-radius:9px;color:var(--muted);font-size:10px;text-decoration:none;font-weight:700}
+.rail a.active{background:#463929;border-color:#927445;color:#f8d599}.rail svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+main{max-width:1320px;margin:auto;padding:24px 22px 60px 84px}
+.intro{margin:0 0 16px;color:var(--muted);font-size:13px}
+.toolbar{display:flex;flex-wrap:wrap;gap:11px;align-items:end;padding:16px;border:1px solid var(--line);background:var(--surface);border-radius:14px;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:170px;flex:1}.field label{color:var(--muted);font-size:12px;font-weight:700}
+select,input{width:100%;height:42px;border:1px solid #71809b;border-radius:9px;background:#0e1b2b;color:var(--text);padding:8px 11px;outline-offset:2px}
+.summary{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:15px}
+.summary strong{font-size:20px}.chip{border:1px solid #826e50;color:#f0ca8a;background:#352e26;padding:4px 9px;font-size:12px;border-radius:999px}
+.muted{color:var(--muted);font-size:12px}
+.deck{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:13px;align-items:stretch}
+.card{padding:14px;background:linear-gradient(155deg,#27374e,#192637);border:1px solid #536580;border-radius:14px;min-width:0;box-shadow:0 9px 24px #0003}
+.card.x{border-color:#a98b59}
+.top{display:flex;align-items:start;justify-content:space-between;gap:6px;min-height:55px}
+.name{margin:0;font-size:15px;overflow-wrap:anywhere}.level{font-size:11px;border:1px solid #7d8ca5;border-radius:6px;padding:3px 8px;white-space:nowrap}
+.x .level{color:#f0cd8d;border-color:#a98b59}.effects{display:flex;flex-direction:column;gap:8px}
+.effect{border-radius:9px;background:#101d2d;padding:10px 11px;min-height:88px}
+.effect-label{font-size:10px;color:var(--gold);font-weight:800;letter-spacing:.12em}
+.effect p{margin:6px 0 0;font-size:13px}
+.empty{display:none;padding:25px;border:1px dashed var(--line);border-radius:12px;text-align:center}
+.details{margin:20px 0 0;padding:14px;border-left:3px solid var(--gold);background:#ffffff08;font-size:12px;color:var(--muted)}
+@media(max-width:740px){
+ header{position:fixed;left:0;right:0;top:0;height:64px;padding:8px 11px;gap:6px}header h1{font-size:18px}header .logo{font-size:9px}
+ header a{font-size:11px;padding:6px 8px}
+ .rail{top:64px;width:55px;padding:8px 4px}
+ .rail a{min-height:52px;font-size:10px}
+ main{padding:77px 10px 36px 65px}
+ .toolbar{padding:11px;gap:8px}
+ .field{min-width:100%}.summary strong{font-size:17px}
+ .deck{grid-template-columns:1fr;gap:10px}
+ .card{padding:12px}.top{min-height:45px}
+ .effect{min-height:auto}.intro{font-size:12px}
+}
+@media(min-width:741px) and (max-width:1000px){.deck{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header><div><div class="logo">FANTASY DUNGEON · RULE REFERENCE</div><h1>💳 カード一覧</h1></div><a href="./index.html">← 戦闘ルール確認室</a></header>
+<nav class="rail" aria-label="ページ移動">
+<a href="./index.html" title="戦闘画面"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15"/></svg>戦闘</a>
+<a class="active" href="./cards.html" aria-current="page" title="カード一覧"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="12" height="16" rx="2"/><path d="M8 8h4M8 12h4M18 7h3v12h-4"/></svg>カード</a>
+</nav>
+<main>
+<p class="intro">グルームヘイヴン初版の開始6クラスのレベル1・X能力カードを参照するための一覧です。<strong>fantasy_Dungeonで採用済みのカードではありません。</strong></p>
+<div class="toolbar">
+  <div class="field"><label for="classSelect">クラス</label><select id="classSelect"></select></div>
+  <div class="field"><label for="levelSelect">カード区分</label><select id="levelSelect"><option value="all">すべて（Lv1＋X）</option><option value="1">レベル1</option><option value="X">Xカード</option></select></div>
+  <div class="field"><label for="search">カード名・効果を検索</label><input id="search" type="search" placeholder="例：気絶 / Fire / 移動"></div>
+</div>
+<div class="summary"><strong id="className"></strong><span id="handLimit" class="chip"></span><span id="cardCount" class="chip"></span><span class="muted" id="classRole"></span></div>
+<section id="deck" class="deck" aria-live="polite"></section>
+<p id="empty" class="empty">該当するカードはありません。</p>
+<div class="details">【参照資料】前の会話で整理したカード名・上段・下段の概要を掲載しています。効果文は独自の日本語要約であり、数値・射程・細かな条件・喪失条件などを省略しています。正確な運用は原作のカードとルールブックで確認してください。<br><a id="sourceLink" href="https://www.gloomhavencards.com/" target="_blank" rel="noopener noreferrer">クラスの原作カード画像を確認する</a></div>
+</main>
+<script>
+"use strict";
+const CLASSES=[["br","ブルート","10","前衛・防御・押し出し・突進","BR",[["Trample","1","防御貫通の近接攻撃","ジャンプ移動しながら攻撃"],["Eye for an Eye","1","反撃態勢","自己回復"],["Sweeping Blow","1","近くの複数体を攻撃","移動と押し出し"],["Provoking Roar","1","攻撃と武装解除","補助効果"],["Overwhelming Assault","1","強力な近接攻撃（喪失）","移動と押し出し"],["Grab and Go","1","周囲の金貨などを回収","移動"],["Warding Strength","1","攻撃と押し出し","継続する防御"],["Shield Bash","1","気絶を与える攻撃（喪失）","シールド"],["Leaping Cleave","1","隣接する複数体を攻撃","ジャンプ移動"],["Spare Dagger","1","遠距離攻撃","近接攻撃"],["Skewer","X","貫通する近接範囲攻撃","大きく移動（喪失）"],["Balanced Measure","X","移動量を活かした攻撃","移動と連動する効果"],["Wall of Doom","X","シールドと反撃（喪失）","防御系の特殊効果"]]],["sw","スペルウィーバー","8","遠距離魔法・範囲攻撃・元素・カード回収","SW",[["Fire Orbs","1","複数の敵への火の魔法（喪失）","移動"],["Impaling Eruption","1","経路上の複数敵を攻撃（喪失）","移動"],["Reviving Ether","1","喪失した能力カードを回収","ジャンプ移動"],["Freezing Nova","1","周囲への攻撃と移動不能","回復"],["Mana Bolt","1","遠距離魔法攻撃","回復"],["Frost Armor","1","遠距離攻撃","継続的な被害軽減（喪失）"],["Flame Strike","1","火の遠距離攻撃","別の遠距離攻撃"],["Ride the Wind","1","周囲の金貨などを回収","長距離ジャンプ（喪失）"],["Crackling Air","X","一定回数の攻撃強化（喪失）","移動と反撃"],["Hardened Spikes","X","反撃効果","移動とシールド"],["Aid from the Ether","X","味方を回復","遠距離型の味方を召喚（喪失）"]]],["sc","スカウンドレル","9","高機動・位置取り・毒・隠密","SC",[["Single Out","1","位置条件で強化される近接攻撃","継続的な攻撃補助（喪失）"],["Flanking Strike","1","味方の配置で威力が変わる攻撃","移動"],["Smoke Bomb","1","透明化と次の攻撃の強化（喪失）","敵を引き寄せる"],["Backstab","1","条件付きの強力な近接攻撃（喪失）","移動"],["Thief's Knack","1","特殊な補助行動","近接攻撃"],["Venom Shiv","1","毒を与える近接攻撃","移動"],["Throwing Knives","1","複数対象への遠距離攻撃","金貨などの回収（喪失）"],["Quick Hands","1","移動しながら近接攻撃","金貨などの回収"],["Special Mixture","1","回復","移動と毒付与"],["Sinister Opportunity","X","配置条件で強化される攻撃","移動と敵の位置操作"],["Trickster's Reversal","X","特殊な近接攻撃（喪失）","防御系効果"],["Swift Bow","X","遠距離攻撃","移動と金貨などの回収"]]],["mt","マインドシーフ","10","精神操作・近接火力・状態異常・召喚","MT",[["Submissive Affliction","1","近接攻撃","敵を操って攻撃させる"],["Into the Night","1","金貨などの回収","透明化"],["Fearsome Blade","1","攻撃と押し出し","移動と攻撃（喪失）"],["Feedback Loop","1","持続強化と攻撃","ジャンプ移動と混乱"],["Gnawing Horde","1","毒を与える召喚（喪失）","移動"],["The Mind's Weakness","1","近接火力を高める持続強化","攻撃と負傷付与"],["Parasitic Influence","1","回復に関係する持続強化","敵を移動させる"],["Scurry","1","移動と攻撃","金貨などの回収（喪失）"],["Perverse Edge","1","近接攻撃（喪失）","遠距離攻撃と気絶"],["Empathetic Assault","1","遠距離攻撃と武装解除（喪失）","移動と自己回復"],["Withering Claw","X","毒・混乱系の持続強化","味方などを移動させる"],["Possession","X","味方などに攻撃させる（喪失）","味方などを移動させる"],["Frigid Apparition","X","氷を使う攻撃と気絶","移動と気絶（喪失）"]]],["ch","クラグハート","11","岩石魔法・地形操作・範囲攻撃・回復","CH",[["Opposing Strike","1","近くの複数体を攻撃","継続的な反撃（喪失）"],["Crushing Grasp","1","攻撃と移動不能","金貨などの回収"],["Avalanche","1","近接範囲攻撃（喪失）","障害物の生成"],["Rumbling Advance","1","回復","移動と周囲へのダメージ"],["Massive Boulder","1","遠距離攻撃と周囲への追加ダメージ","移動"],["Backup Ammunition","1","攻撃対象を増やす持続効果（喪失）","移動"],["Rock Tunnel","1","障害物に関連する行動","ジャンプ移動と移動不能（喪失）"],["Unstable Upheaval","1","近接範囲攻撃（喪失）","シールド"],["Crater","1","遠距離攻撃と押し出し","ジャンプ移動と周囲へのダメージ"],["Dirt Tornado","1","広範囲への攻撃と混乱","移動"],["Earthen Clod","1","遠距離攻撃と移動不能","回復"],["Heaving Swing","X","攻撃と押し出し","障害物に関係する効果"],["Forceful Storm","X","遠距離範囲攻撃と武装解除（喪失）","補助効果"],["Nature's Lift","X","回復","継続型の支援（喪失）"]]],["ti","ティンカラー","12","回復・罠・範囲攻撃・機械召喚","TI",[["Proximity Mine","1","ダメージ罠を設置（喪失）","移動"],["Harmless Contraption","1","機械を召喚（喪失）","回復"],["Flamethrower","1","範囲攻撃と負傷（喪失）","シールド"],["Hook Gun","1","遠距離攻撃と引き寄せ","金貨などの回収（喪失）"],["Ink Bomb","1","遠距離範囲攻撃（喪失）","移動"],["Net Shooter","1","遠距離範囲攻撃と移動不能（喪失）","移動と移動不能"],["Stun Shot","1","遠距離攻撃と気絶","移動"],["Reinvigorating Elixir","1","回復","味方のカード回収支援（喪失）"],["Restorative Mist","1","味方を回復","移動しながら味方を回復"],["Energizing Tonic","1","強力な回復（喪失）","移動（喪失）"],["Enhancement Field","1","遠距離攻撃","味方の攻撃強化"],["Toxic Bolt","1","遠距離攻撃と毒","遠距離攻撃（喪失）"],["Reviving Shock","X","複数の敵への遠距離攻撃","回復（喪失）"],["Volatile Contraption","X","毒罠の設置","氷に関連する特殊効果"],["Potent Potables","X","回復を強める持続効果（喪失）","移動"]]]];
+const $=id=>document.getElementById(id);
+const select=$("classSelect");
+for(const g of CLASSES){const o=document.createElement("option");o.value=g[0];o.textContent=g[1]+"（手札"+g[2]+"枚）";select.append(o)}
+function appendText(parent,tag,cls,content){const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=content;parent.append(e);return e}
+function render(){
+ const g=CLASSES.find(x=>x[0]===select.value)||CLASSES[0], filter=$("levelSelect").value,q=$("search").value.trim().toLowerCase();
+ const filtered=g[5].filter(c=>(filter==="all"||c[1]===filter)&&[c[0],c[2],c[3]].some(x=>x.toLowerCase().includes(q)));
+ $("className").textContent=g[1];$("handLimit").textContent="手札上限 "+g[2]+"枚";
+ $("cardCount").textContent="表示 "+filtered.length+" / 初期 "+g[5].length+"枚";
+ $("classRole").textContent=g[3];
+ $("sourceLink").href="https://www.gloomhavencards.com/gh/characters/"+g[4];
+ const deck=$("deck");deck.replaceChildren();
+ for(const c of filtered){
+  const article=document.createElement("article");article.className="card"+(c[1]==="X"?" x":"");
+  const top=document.createElement("div");top.className="top";appendText(top,"h2","name",c[0]);appendText(top,"span","level",c[1]==="X"?"Xカード":"Lv1");article.append(top);
+  const effects=document.createElement("div");effects.className="effects";
+  for(const [label,value] of [["上段",c[2]],["下段",c[3]]]){const box=document.createElement("div");box.className="effect";appendText(box,"div","effect-label",label);appendText(box,"p","",value);effects.append(box)}
+  article.append(effects);deck.append(article);
+ }
+ $("empty").style.display=filtered.length?"none":"block";
+}
+for(const id of ["classSelect","levelSelect","search"])$(id).addEventListener(id==="search"?"input":"change",render);
+const params=new URLSearchParams(location.search);if(CLASSES.some(g=>g[0]===params.get("class")))select.value=params.get("class");
+render();
+</script>
+</body>
+</html>
