@@ -131,13 +131,23 @@
         transform:translateX(var(--hex-offset));
       }
     }
+
+    .desktop-card-link{margin-left:auto;text-decoration:none;white-space:nowrap;color:#f2d6a3;border:1px solid #94764f;border-radius:9px;background:#302b27;padding:8px 11px;font-size:13px;font-weight:700}
+    .desktop-card-link:hover{background:#4b3b2c}
+    @media(max-width:740px){
+      .desktop-card-link{display:none}
+      .mobile-rail a.mobile-card-nav{display:flex;flex:0 0 51px;min-height:51px;width:100%;align-items:center;justify-content:center;flex-direction:column;gap:3px;background:transparent;border:1px solid transparent;border-radius:10px;padding:5px 1px;color:#e5bd77;text-decoration:none}
+      .mobile-rail a.mobile-card-nav svg{display:block;width:21px;height:21px}
+      .mobile-rail a.mobile-card-nav span{font-size:10px;font-weight:700;line-height:1.1}
+      .mobile-rail a.mobile-card-nav:hover{background:#33445c}
+    }
   </style>
 </head>
 <body>
 <div class="container">
   <header>
     <div class="brand"><div class="eyebrow">FANTASY DUNGEON · RULE LAB</div><h1>戦闘ルール確認室</h1><p>アクション × 強化コマンドの組み合わせを実際に試す、独立した検証ページ</p></div>
-    <span class="pill">試作 v0.2 / 正式仕様ではありません</span><span id="mobileViewTitle" class="mobile-view-title" aria-live="polite">マップ</span>
+    <a class="desktop-card-link" href="./cards.html">💳 カード一覧を見る</a><span class="pill">試作 v0.2 / 正式仕様ではありません</span><span id="mobileViewTitle" class="mobile-view-title" aria-live="polite">マップ</span>
   </header>
   <nav class="mobile-rail" aria-label="表示する画面を切り替え">
     <button type="button" data-nav-view="map" title="マップ" aria-label="マップ画面を表示" aria-pressed="true" class="active"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg><span>マップ</span></button>
@@ -148,6 +158,7 @@
     <button type="button" data-nav-view="scenario" title="状況" aria-label="状況画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4m0 1c5-3 9 3 14 0v10c-5 3-9-3-14 0"/></svg><span>状況</span></button>
     <button type="button" data-nav-view="log" title="ログ" aria-label="ログ画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h12v15a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 0-3-3h7z"/><path d="M8 8h8M8 12h8M8 16h6"/></svg><span>ログ</span></button>
     <button type="button" data-nav-view="rules" title="説明" aria-label="説明画面を表示" aria-pressed="false" class=""><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5a2 2 0 0 1 2-2h6v18H5a2 2 0 0 0-2 2zM21 5a2 2 0 0 0-2-2h-6v18h6a2 2 0 0 1 2 2z"/></svg><span>説明</span></button>
+    <a class="mobile-card-nav" href="./cards.html" title="クラス別カード一覧を開く" aria-label="カード一覧ページへ移動"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="12" height="16" rx="2"/><path d="M8 8h4M8 12h4M18 7h3v12h-4"/></svg><span>カード</span></a>
   </nav>
   <main class="grid">
     <aside class="stack">
