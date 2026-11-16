@@ -103,6 +103,21 @@ select,input{width:100%;height:42px;border:1px solid #71809b;border-radius:9px;b
  .summary{margin-bottom:8px;gap:5px}
  .summary strong{font-size:14px}
 }
+
+/* Keep class/level controls visible under the page header while scrolling cards. */
+.toolbar{
+ position:sticky;
+ top:76px;
+ z-index:9;
+ background:#1b293bed;
+ border-color:#52647c;
+ box-shadow:0 6px 18px #0006;
+ backdrop-filter:blur(12px);
+}
+@media(max-width:740px){
+ .toolbar{top:64px}
+}
+
 </style>
 </head>
 <body>
