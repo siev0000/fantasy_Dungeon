@@ -50,6 +50,35 @@ select,input{width:100%;height:42px;border:1px solid #71809b;border-radius:9px;b
 }
 @media(min-width:741px) and (max-width:1000px){.deck{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .initiative{display:inline-block;margin-left:auto;font-size:11px;color:#e4c18b;border:1px solid #89734f;border-radius:5px;padding:3px 5px}
+
+/* Cards shown as exactly three columns, including mobile */
+.deck{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.card{padding:11px;min-width:0}
+.top{display:flex;flex-wrap:wrap;align-content:start;align-items:start;min-height:90px;gap:4px}
+.card-title{width:100%;min-width:0}
+.kana{font-size:11px;line-height:1.35;color:#e9c891;overflow-wrap:anywhere;letter-spacing:.01em}
+.name{font-size:16px;line-height:1.4;margin:4px 0 6px;overflow-wrap:anywhere}
+.level,.initiative{font-size:10px;margin-left:0}
+.toolbar{flex-wrap:nowrap;align-items:end;gap:10px}
+.toolbar .field{min-width:0;flex:1 1 50%}
+.toolbar .field select{min-width:0}
+@media(max-width:740px){
+ .toolbar{display:flex;flex-wrap:nowrap;padding:8px;gap:6px}
+ .toolbar .field{min-width:0;flex:1 1 50%}
+ .field label{font-size:10px}
+ select{font-size:11px;padding:5px 4px;height:37px}
+ .deck{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .card{padding:5px;border-radius:8px}
+ .top{min-height:115px;gap:4px}
+ .kana{font-size:9px;line-height:1.25;overflow-wrap:anywhere}
+ .name{font-size:12px;line-height:1.3;margin:4px 0 5px}
+ .level,.initiative{font-size:9px;padding:2px 4px}
+ .effects{gap:4px}
+ .effect{padding:6px 5px;border-radius:5px}
+ .effect-label{font-size:9px}
+ .effect p{font-size:10px;line-height:1.4;margin-top:4px;overflow-wrap:anywhere}
+ .summary{gap:5px}.summary strong{font-size:14px}.summary .chip{font-size:10px;padding:3px 5px}
+}
 </style>
 </head>
 <body>
@@ -62,13 +91,12 @@ select,input{width:100%;height:42px;border:1px solid #71809b;border-radius:9px;b
 <p class="intro">グルームヘイヴン初版の開始6クラスのレベル1・X・レベル2〜9の能力カードを参照するための一覧です。<strong>fantasy_Dungeonで採用済みのカードではありません。</strong></p>
 <div class="toolbar">
   <div class="field"><label for="classSelect">クラス</label><select id="classSelect"></select></div>
-  <div class="field"><label for="levelSelect">カード区分</label><select id="levelSelect"><option value="starter">Lv1＋X（初期候補）</option><option value="all">全レベル</option><option value="1">レベル1</option><option value="X">Xカード</option><option value="2">レベル2</option><option value="3">レベル3</option><option value="4">レベル4</option><option value="5">レベル5</option><option value="6">レベル6</option><option value="7">レベル7</option><option value="8">レベル8</option><option value="9">レベル9</option></select></div>
-  <div class="field"><label for="search">カード名・効果を検索</label><input id="search" type="search" placeholder="例：気絶 / Fire / 移動"></div>
+  <div class="field"><label for="levelSelect">Lv</label><select id="levelSelect"><option value="starter">Lv1＋X（初期候補）</option><option value="all">全レベル</option><option value="1">レベル1</option><option value="X">Xカード</option><option value="2">レベル2</option><option value="3">レベル3</option><option value="4">レベル4</option><option value="5">レベル5</option><option value="6">レベル6</option><option value="7">レベル7</option><option value="8">レベル8</option><option value="9">レベル9</option></select></div>
 </div>
 <div class="summary"><strong id="className"></strong><span id="handLimit" class="chip"></span><span id="cardCount" class="chip"></span><span class="muted" id="classRole"></span></div>
 <section id="deck" class="deck" aria-live="polite"></section>
 <p id="empty" class="empty">該当するカードはありません。</p>
-<div class="details">【参照資料】原作データに照合したカード名・レベル・行動順を掲載しています。Lv1・Xの上段・下段は参考用の日本語概要です。Lv2以降は名称などの一覧のみです。効果文は独自の日本語要約であり、数値・射程・細かな条件・喪失条件などを省略しています。正確な運用は原作のカードとルールブックで確認してください。<br>出典：<a href="https://github.com/alphaCastor/gloomhaven-cards/blob/master/data/character-ability-cards.js" target="_blank" rel="noopener noreferrer">キャラクター能力カードデータ</a><br><a id="sourceLink" href="https://www.gloomhavencards.com/" target="_blank" rel="noopener noreferrer">クラスの原作カード画像を確認する</a></div>
+<div class="details">【参照資料】カード名は上段に英語名のカタカナ読み、下段に日本語の参考訳を表示しています（公式訳ではありません）。原作データに照合したレベル・行動順を掲載しています。Lv1・Xの上段・下段は参考用の日本語概要です。Lv2以降は名称などの一覧のみです。効果文は独自の日本語要約であり、数値・射程・細かな条件・喪失条件などを省略しています。正確な運用は原作のカードとルールブックで確認してください。<br>出典：<a href="https://github.com/alphaCastor/gloomhaven-cards/blob/master/data/character-ability-cards.js" target="_blank" rel="noopener noreferrer">キャラクター能力カードデータ</a><br><a id="sourceLink" href="https://www.gloomhavencards.com/" target="_blank" rel="noopener noreferrer">クラスの原作カード画像を確認する</a></div>
 </main>
 <script>
 "use strict";
@@ -87,13 +115,14 @@ for(const g of CLASSES){
  }
  g[5].sort((a,b)=>(a[1]==="X"?1:Number(a[1]))-(b[1]==="X"?1:Number(b[1]))||(Number(a[5]||999)-Number(b[5]||999)));
 }
+const DISPLAY_NAMES={"balanced measure":["均衡の一撃","バランスト・メジャー"],"brute force":["蛮力","ブルート・フォース"],"crippling offensive":["破壊的攻勢","クリプリング・オフェンシブ"],"defensive tactics":["防御戦術","ディフェンシブ・タクティクス"],"devastating hack":["壊滅の斬撃","デヴァステイティング・ハック"],"eye for an eye":["目には目を","アイ・フォー・アン・アイ"],"face your end":["終焉を迎えよ","フェイス・ユア・エンド"],"fatal advance":["致命の進撃","フェイタル・アドヴァンス"],"frenzied onslaught":["狂乱の猛攻","フレンジード・オンスロート"],"grab and go":["奪取して離脱","グラブ・アンド・ゴー"],"hook and chain":["鉤と鎖","フック・アンド・チェイン"],"immovable phalanx":["不動の密集陣","イムーヴァブル・ファランクス"],"juggernaut":["重装の猛進","ジャガーノート"],"king of the hill":["丘の王","キング・オブ・ザ・ヒル"],"leaping cleave":["跳躍斬り","リーピング・クリーヴ"],"overwhelming assault":["圧倒的強襲","オーヴァーウェルミング・アサルト"],"provoking roar":["挑発の咆哮","プロヴォーキング・ロア"],"quietus":["絶命","クワイエタス"],"selfish retribution":["利己的報復","セルフィッシュ・リトリビューション"],"shield bash":["盾打ち","シールド・バッシュ"],"skewer":["串刺し","スキュアー"],"skirmishing maneuver":["遊撃機動","スカーミッシング・マヌーヴァー"],"spare dagger":["予備の短剣","スペア・ダガー"],"sweeping blow":["薙ぎ払い","スウィーピング・ブロウ"],"trample":["踏み荒らし","トランプル"],"unstoppable charge":["止まらぬ突撃","アンストッパブル・チャージ"],"wall of doom":["破滅の壁","ウォール・オブ・ドゥーム"],"warding strength":["守護の力","ウォーディング・ストレングス"],"whirlwind":["旋風斬り","ワールウィンド"],"aid from the ether":["霊気の援護","エイド・フロム・ジ・イーサー"],"black hole":["暗黒の穴","ブラック・ホール"],"chromatic explosion":["多彩な爆発","クロマティック・エクスプロージョン"],"cold fire":["冷たい炎","コールド・ファイア"],"cold front":["寒冷前線","コールド・フロント"],"crackling air":["帯電する空気","クラックリング・エア"],"elemental aid":["元素の加護","エレメンタル・エイド"],"engulfed in flames":["炎に包まれて","エンガルフド・イン・フレイムズ"],"fire orbs":["火炎球","ファイア・オーブズ"],"flame strike":["炎の一撃","フレイム・ストライク"],"flashing burst":["閃光の炸裂","フラッシング・バースト"],"forked beam":["二股の光線","フォークト・ビーム"],"freezing nova":["凍結の新星","フリージング・ノヴァ"],"frost armor":["氷の鎧","フロスト・アーマー"],"frozen night":["凍てつく夜","フローズン・ナイト"],"hardened spikes":["硬化した棘","ハードンド・スパイクス"],"icy blast":["氷の爆風","アイシー・ブラスト"],"impaling eruption":["貫通噴出","インペイリング・イラプション"],"inferno":["業火","インフェルノ"],"living torch":["生ける松明","リヴィング・トーチ"],"mana bolt":["魔力の矢","マナ・ボルト"],"reviving ether":["再生の霊気","リヴァイヴィング・イーサー"],"ride the wind":["風に乗って","ライド・ザ・ウィンド"],"spirit of doom":["破滅の精霊","スピリット・オブ・ドゥーム"],"stone fists":["石の拳","ストーン・フィスツ"],"twin restoration":["双重の回復","ツイン・レストレーション"],"zephyr wings":["そよ風の翼","ゼファー・ウィングズ"],"backstab":["背後からの一撃","バックスタブ"],"burning oil":["燃える油","バーニング・オイル"],"crippling poison":["衰弱の毒","クリプリング・ポイズン"],"cull the weak":["弱者狩り","カル・ザ・ウィーク"],"duelist's advance":["決闘者の前進","デュエリスツ・アドヴァンス"],"flanking strike":["挟撃","フランキング・ストライク"],"flintlock":["火打ち銃","フリントロック"],"flurry of blades":["刃の乱舞","フラリー・オブ・ブレイズ"],"gruesome advantage":["残忍な優位","グルーサム・アドヴァンテージ"],"hidden daggers":["隠し短剣","ヒドゥン・ダガーズ"],"long con":["長期の詐術","ロング・コン"],"open wound":["開いた傷","オープン・ウーンド"],"pain's end":["苦痛の終わり","ペインズ・エンド"],"quick hands":["素早い手","クイック・ハンズ"],"single out":["孤立を狙う","シングル・アウト"],"sinister opportunity":["邪悪な好機","シニスター・オポチュニティ"],"smoke bomb":["煙幕弾","スモーク・ボム"],"special mixture":["特殊な調合薬","スペシャル・ミクスチャー"],"spring the trap":["罠の起動","スプリング・ザ・トラップ"],"stick to the shadows":["影に潜む","スティック・トゥ・ザ・シャドウズ"],"stiletto storm":["短剣の嵐","スティレット・ストーム"],"swift bow":["疾風の弓","スウィフト・ボウ"],"thief's knack":["盗賊の手際","シーフズ・ナック"],"throwing knives":["投げナイフ","スローイング・ナイヴズ"],"trickster's reversal":["詐欺師の反転","トリックスターズ・リヴァーサル"],"venom shiv":["毒の短剣","ヴェノム・シヴ"],"visage of the inevitable":["避けられぬ運命","ヴィサージュ・オブ・ジ・イネヴィタブル"],"watch it burn":["燃え尽きるまで","ウォッチ・イット・バーン"],"brain leech":["脳への吸血","ブレイン・リーチ"],"corrupting embrace":["腐敗の抱擁","コラプティング・エンブレイス"],"cranium overload":["頭蓋の過負荷","クレイニアム・オーヴァーロード"],"dark frenzy":["闇の狂乱","ダーク・フレンジー"],"domination":["支配","ドミネーション"],"empathetic assault":["共感の襲撃","エンパセティック・アサルト"],"fearsome blade":["恐怖の刃","フィアサム・ブレイド"],"feedback loop":["反響の輪","フィードバック・ループ"],"frigid apparition":["凍える幻影","フリジッド・アパリション"],"frozen mind":["凍った精神","フローズン・マインド"],"gnawing horde":["かじりつく群れ","ノーイング・ホード"],"hostile takeover":["敵対的乗っ取り","ホスタイル・テイクオーヴァー"],"into the night":["夜の中へ","イントゥ・ザ・ナイト"],"many as one":["群れは一つ","メニー・アズ・ワン"],"mass hysteria":["集団ヒステリー","マス・ヒステリア"],"parasitic influence":["寄生の影響","パラシティック・インフルエンス"],"perverse edge":["倒錯の刃","パーヴァース・エッジ"],"phantasmal killer":["幻影の殺し手","ファンタズマル・キラー"],"pilfer":["盗み","ピルファー"],"possession":["憑依","ポゼッション"],"psychic projection":["精神の投影","サイキック・プロジェクション"],"scurry":["小走り","スカリー"],"shared nightmare":["共有する悪夢","シェアード・ナイトメア"],"silent scream":["無言の叫び","サイレント・スクリーム"],"submissive affliction":["服従の苦痛","サブミッシヴ・アフリクション"],"the mind's weakness":["精神の弱点","ザ・マインズ・ウィークネス"],"vicious blood":["凶悪な血","ヴィシャス・ブラッド"],"withering claw":["衰弱の爪","ウィザリング・クロー"],"wretched creature":["哀れな生物","レッチド・クリーチャー"],"avalanche":["雪崩","アヴァランチ"],"backup ammunition":["予備の弾薬","バックアップ・アミュニション"],"blind destruction":["盲目的破壊","ブラインド・ディストラクション"],"blunt force":["鈍器の力","ブラント・フォース"],"brutal momentum":["荒々しい勢い","ブルータル・モメンタム"],"cataclysm":["大変動","カタクリズム"],"clear the way":["道を切り開く","クリア・ザ・ウェイ"],"crater":["噴火口","クレーター"],"crushing grasp":["握り潰し","クラッシング・グラスプ"],"dig pit":["穴を掘る","ディグ・ピット"],"dirt tornado":["土の竜巻","ダート・トルネード"],"earthen clod":["土塊","アーセン・クロッド"],"explosive punch":["爆裂拳","エクスプローシヴ・パンチ"],"forceful storm":["激しい嵐","フォースフル・ストーム"],"heaving swing":["大振りの一撃","ヒーヴィング・スウィング"],"kinetic assault":["運動力の強襲","キネティック・アサルト"],"lumbering bash":["重々しい打撃","ランバリング・バッシュ"],"massive boulder":["巨大な岩石","マッシヴ・ボルダー"],"meteor":["隕石","メテオ"],"nature's lift":["自然の持ち上げ","ネイチャーズ・リフト"],"opposing strike":["対抗の一撃","オポージング・ストライク"],"petrify":["石化","ペトリファイ"],"pulverize":["粉砕","パルヴァライズ"],"rock slide":["落石","ロック・スライド"],"rock tunnel":["岩のトンネル","ロック・トンネル"],"rocky end":["岩場の終焉","ロッキー・エンド"],"rumbling advance":["地鳴りの前進","ランブリング・アドヴァンス"],"sentient growth":["意思ある成長","センティエント・グロース"],"stone pummel":["石の連打","ストーン・パメル"],"unstable upheaval":["不安定な隆起","アンステイブル・アップヒーヴァル"],"auto turret":["自動砲塔","オート・タレット"],"chimeric formula":["合成の公式","キメリック・フォーミュラ"],"crank bow":["巻き上げ弓","クランク・ボウ"],"curative aerosol":["治癒の噴霧","キュラティヴ・エアロゾル"],"dangerous contraption":["危険な装置","デンジャラス・コントラプション"],"disintegration beam":["分解光線","ディスインテグレーション・ビーム"],"disorienting flash":["攪乱の閃光","ディスオリエンティング・フラッシュ"],"energizing tonic":["活力の強壮薬","エナジャイジング・トニック"],"enhancement field":["強化フィールド","エンハンスメント・フィールド"],"flamethrower":["火炎放射器","フレイムスローワー"],"gas canister":["ガス容器","ガス・キャニスター"],"harmless contraption":["無害な装置","ハームレス・コントラプション"],"harsh stimulants":["強烈な刺激剤","ハーシュ・スティミュランツ"],"hook gun":["鉤銃","フック・ガン"],"ink bomb":["インク爆弾","インク・ボム"],"jet propulsion":["噴射推進","ジェット・プロパルション"],"lethal injection":["致死の注射","リーサル・インジェクション"],"micro bots":["小型ロボット","マイクロ・ボッツ"],"murderous contraption":["殺戮装置","マーダラス・コントラプション"],"net shooter":["網射出器","ネット・シューター"],"noxious vials":["有毒な小瓶","ノクシャス・ヴァイアルズ"],"potent potables":["強力な薬剤","ポーテント・ポータブルズ"],"proximity mine":["接近感知地雷","プロキシミティ・マイン"],"reinvigorating elixir":["活力回復の霊薬","リインヴィゴレイティング・エリクサー"],"restorative mist":["回復の霧","レストラティヴ・ミスト"],"reviving shock":["蘇生の衝撃","リヴァイヴィング・ショック"],"stamina booster":["持久力増強剤","スタミナ・ブースター"],"stun shot":["気絶射撃","スタン・ショット"],"tinkerer's tools":["技師の道具","ティンカラーズ・ツールズ"],"toxic bolt":["毒の矢","トキシック・ボルト"],"volatile concoction":["不安定な調合薬","ヴォラタイル・コンコクション"]};
 const $=id=>document.getElementById(id);
 const select=$("classSelect");
 for(const g of CLASSES){const o=document.createElement("option");o.value=g[0];o.textContent=g[1]+"（手札"+g[2]+"枚）";select.append(o)}
 function appendText(parent,tag,cls,content){const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=content;parent.append(e);return e}
 function render(){
- const g=CLASSES.find(x=>x[0]===select.value)||CLASSES[0], filter=$("levelSelect").value,q=$("search").value.trim().toLowerCase();
- const filtered=g[5].filter(c=>(filter==="all"||filter==="starter"&&(c[1]==="1"||c[1]==="X")||c[1]===filter)&&[c[0],c[2],c[3]].some(x=>x.toLowerCase().includes(q)));
+ const g=CLASSES.find(x=>x[0]===select.value)||CLASSES[0], filter=$("levelSelect").value;
+ const filtered=g[5].filter(c=>(filter==="all"||filter==="starter"&&(c[1]==="1"||c[1]==="X")||c[1]===filter));
  $("className").textContent=g[1];$("handLimit").textContent="手札上限 "+g[2]+"枚";
  $("cardCount").textContent="表示 "+filtered.length+" / 登録 "+g[5].length+"枚";
  $("classRole").textContent=g[3];
@@ -101,14 +130,14 @@ function render(){
  const deck=$("deck");deck.replaceChildren();
  for(const c of filtered){
   const article=document.createElement("article");article.className="card"+(c[1]==="X"?" x":"");
-  const top=document.createElement("div");top.className="top";appendText(top,"h2","name",c[0]);appendText(top,"span","level",c[1]==="X"?"Xカード":"Lv"+c[1]);if(c[4])appendText(top,"span","initiative","行動順 "+c[4]);article.append(top);
+  const top=document.createElement("div");top.className="top";const nm=DISPLAY_NAMES[c[0].toLowerCase()]||[c[0],c[0]];const title=document.createElement("div");title.className="card-title";appendText(title,"div","kana",nm[1]);appendText(title,"h2","name",nm[0]);top.append(title);appendText(top,"span","level",c[1]==="X"?"Xカード":"Lv"+c[1]);if(c[4])appendText(top,"span","initiative","行動順 "+c[4]);article.append(top);
   const effects=document.createElement("div");effects.className="effects";
   for(const [label,value] of [["上段",c[2]],["下段",c[3]]]){const box=document.createElement("div");box.className="effect";appendText(box,"div","effect-label",label);appendText(box,"p","",value);effects.append(box)}
   article.append(effects);deck.append(article);
  }
  $("empty").style.display=filtered.length?"none":"block";
 }
-for(const id of ["classSelect","levelSelect","search"])$(id).addEventListener(id==="search"?"input":"change",render);
+for(const id of ["classSelect","levelSelect"])$(id).addEventListener("change",render);
 const params=new URLSearchParams(location.search);if(CLASSES.some(g=>g[0]===params.get("class")))select.value=params.get("class");
 render();
 </script>
